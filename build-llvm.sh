@@ -319,6 +319,7 @@ cmake \
     $CMAKEFLAGS \
     ..
 
+cmake --build build -j ${CORES+-j$CORES}
 cmake --install build
 
 cp ../LICENSE.TXT $PREFIX
