@@ -24,7 +24,6 @@ jobs:
         run: |
           touch versions
       - name: Check latest version
-        if: github.event_name == 'schedule'
         run: |
           echo LLVM_VERSION=$(git ls-remote https://github.com/llvm/llvm-project.git | grep 'refs/heads/${{inputs.version || 'main'}}$' | awk '{print $1}') >> versions
           echo MINGW_W64_VERSION=$(git ls-remote https://github.com/mingw-w64/mingw-w64.git | grep 'refs/heads/master$' | awk '{print $1}') >> versions
@@ -35,7 +34,6 @@ jobs:
           name: versions
           path: |
             versions
-          retention-days: 7
 
   # Build a cross compiler for Linux, targeting Windows.
   # linux:
