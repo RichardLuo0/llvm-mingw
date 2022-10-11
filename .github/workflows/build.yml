@@ -193,7 +193,7 @@ jobs:
           cat versions >> $GITHUB_ENV
           echo Enabling CFGuard when building with latest llvm and mingw-w64
           echo CFGUARD_PARAMS=--enable-cfguard >> $GITHUB_ENV
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build
         run: |
           ./build-llvm.sh ${{github.workspace}}/llvm --disable-clang-tools-extra --disable-lldb --full-llvm $CFGUARD_PARAMS
