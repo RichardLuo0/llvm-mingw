@@ -1,6 +1,12 @@
 name: Builds
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "LLVM version (default to main)"
+        required: true
+        default: "main"
+        type: string
 
 jobs:
   # For scheduled builds, get the commit ids of the latest versions to build.
@@ -20,11 +26,11 @@ jobs:
       - name: Check latest version
         if: github.event_name == 'schedule'
         run: |
-          echo LLVM_VERSION=$(git ls-remote https://github.com/llvm/llvm-project.git | grep 'refs/heads/main$' | awk '{print $1}') >> versions
+          echo LLVM_VERSION=$(git ls-remote https://github.com/llvm/llvm-project.git | grep 'refs/heads/${{inputs.version || 'main'}}$' | awk '{print $1}') >> versions
           echo MINGW_W64_VERSION=$(git ls-remote https://github.com/mingw-w64/mingw-w64.git | grep 'refs/heads/master$' | awk '{print $1}') >> versions
           echo PYTHON_VERSION_MINGW=$(git ls-remote https://github.com/msys2-contrib/cpython-mingw.git | grep 'refs/heads/mingw-v3.10.5$' | awk '{print $1}') >> versions
           cat versions
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: versions
           path: |
@@ -158,7 +164,6 @@ jobs:
       matrix:
         sys:
           - mingw64
-          - clang64
     steps:
       - uses: msys2/setup-msys2@v2
         with:
