@@ -148,10 +148,6 @@ jobs:
   #           llvm-mingw-macos.tar.xz
   #         retention-days: 7
 
-  # Test building the toolchain on msys2 (in the mingw64 and clang64
-  # environments). The binaries built here rely on the runtime libraries from
-  # the host environment (libstdc++ or libc++). No artifacts are stored from
-  # these builds, but llvm-mingw's tests are run.
   msys2:
     if: (github.event_name != 'schedule') || (github.repository == 'mstorsjo/llvm-mingw')
     needs: [get-versions]
@@ -168,11 +164,6 @@ jobs:
       - uses: msys2/setup-msys2@v2
         with:
           msystem: ${{matrix.sys}}
-          # Update so that we get a new enough compiler in the clang64
-          # environment (a version of clang that supports hidden visibility).
-          # The GCC build (in the mingw64 environment) seems to export
-          # slightly fewer symbols and doesn't hit the limit quite yet.
-          update: true
           install: >-
             git
             make
@@ -196,6 +187,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build
         run: |
+          mkdir -p ${{github.workspace}}/llvm
           ./build-llvm.sh ${{github.workspace}}/llvm --disable-clang-tools-extra --disable-lldb --full-llvm $CFGUARD_PARAMS
       - name: Upload zip
         uses: actions/upload-artifact@v3
