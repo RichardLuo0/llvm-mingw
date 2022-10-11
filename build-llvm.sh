@@ -306,6 +306,7 @@ mkdir -p $BUILDDIR
 cd $BUILDDIR
 [ -n "$NO_RECONF" ] || rm -rf CMake*
 cmake \
+    -B build \
     ${CMAKE_GENERATOR+-G} "$CMAKE_GENERATOR" \
     -DCMAKE_INSTALL_PREFIX="$PREFIX" \
     -DCMAKE_BUILD_TYPE=Release \
@@ -318,6 +319,6 @@ cmake \
     $CMAKEFLAGS \
     ..
 
-$BUILDCMD ${CORES+-j$CORES} install/strip
+cmake --install build
 
 cp ../LICENSE.TXT $PREFIX

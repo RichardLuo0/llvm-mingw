@@ -196,12 +196,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build
         run: |
-          ./build-llvm.sh $(pwd)/install/llvm-mingw --disable-clang-tools-extra --disable-lldb --full-llvm $CFGUARD_PARAMS
+          ./build-llvm.sh ${{github.workspace}}/llvm --disable-clang-tools-extra --disable-lldb --full-llvm $CFGUARD_PARAMS
       - name: Upload zip
         uses: actions/upload-artifact@v3
         with:
-          name: llvm-mingw-${{env.versions}}.zip
-          path: $(pwd)/install/llvm-mingw
+          name: llvm-mingw-${{env.LLVM_VERSION}}.zip
+          path: ${{github.workspace}}/llvm
 
   # Use the Linux cross compilers built in the first step to cross compile
   # llvm and make a proper standalone toolchain for Windows (for all 4
