@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "LLVM version (default to main)"
+        description: "LLVM version (default to main), for example release/15.x"
         required: true
         default: "main"
         type: string
@@ -32,7 +32,13 @@ jobs:
             cmake:p
       - name: Check latest version
         run: |
-          echo LLVM_VERSION=$(git ls-remote https://github.com/llvm/llvm-project.git | grep 'refs/heads/${{inputs.version || 'main'}}$' | awk '{print $1}') >> $GITHUB_ENV
+          LLVM_VERSION=$(git ls-remote https://github.com/llvm/llvm-project.git | grep 'refs/heads/${{inputs.version || 'main'}}$' | awk '{print $1}')
+          echo LLVM_VERSION=$LLVM_VERSION >> $GITHUB_ENV
+          if [ -z "$LLVM_VERSION" ]
+          then
+            echo "LLVM version is not valid"
+            exit 1
+          fi
       - uses: actions/checkout@v3
       - name: Build
         run: |
