@@ -292,7 +292,7 @@ if [ -n "$SYMLINK_PROJECTS" ]; then
     fi
 else
     EXPLICIT_PROJECTS=1
-    PROJECTS="clang;lld"
+    PROJECTS=""
     if [ -n "$LLDB" ]; then
         PROJECTS="$PROJECTS;lldb"
     fi
