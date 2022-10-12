@@ -48,5 +48,5 @@ jobs:
       - name: Upload zip
         uses: actions/upload-artifact@v3
         with:
-          name: llvm-mingw-${{env.ARTIFACT_NAME}}.zip
+          name: llvm-mingw-${{env.ARTIFACT_NAME}}
           path: ${{github.workspace}}/llvm
