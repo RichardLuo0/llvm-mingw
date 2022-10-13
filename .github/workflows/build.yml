@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         sys:
-          - mingw64
+          - UCRT64
     steps:
       - uses: msys2/setup-msys2@v2
         with:
@@ -26,9 +26,8 @@ jobs:
           install: >-
             git
             make
-            diffutils
+            mingw-w64-ucrt-x86_64-gcc
           pacboy: >-
-            toolchain:p
             cmake:p
       - name: Check latest version
         run: |
