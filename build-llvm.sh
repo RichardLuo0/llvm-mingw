@@ -22,8 +22,6 @@ unset HOST
 BUILDDIR="build"
 LINK_DYLIB=ON
 ASSERTSSUFFIX=""
-LLDB=ON
-CLANG_TOOLS_EXTRA=ON
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -62,11 +60,14 @@ while [ $# -gt 0 ]; do
     --symlink-projects)
         SYMLINK_PROJECTS=1
         ;;
-    --disable-lldb)
-        unset LLDB
+    --enable-lldb)
+        LLDB=ON
         ;;
-    --disable-clang-tools-extra)
-        unset CLANG_TOOLS_EXTRA
+    --enable-clang)
+        CLANG=ON
+        ;;
+    --enable-clang-tools-extra)
+        CLANG_TOOLS_EXTRA=ON
         ;;
     *)
         PREFIX="$1"
@@ -314,6 +315,9 @@ else
     PROJECTS=""
     if [ -n "$LLDB" ]; then
         PROJECTS="$PROJECTS;lldb"
+    fi
+    if [ -n "$CLANG" ]; then
+        PROJECTS="$PROJECTS;clang"
     fi
     if [ -n "$CLANG_TOOLS_EXTRA" ]; then
         PROJECTS="$PROJECTS;clang-tools-extra"
