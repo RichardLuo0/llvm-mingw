@@ -8,9 +8,10 @@ on:
         default: "main"
         type: string
       clang:
-        description: "Compile clang"
+        description: "Build clang"
         required: true
         type: boolean
+        default: true
 
 jobs:
   msys2:
