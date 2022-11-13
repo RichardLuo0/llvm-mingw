@@ -47,7 +47,7 @@ jobs:
       - name: Build
         run: |
           LLVM_VERSION=${{env.LLVM_VERSION}}
-          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm ${{inputs.clang ? "--enable-clang" : ""}}
+          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm ${{inputs.clang && '--enable-clang' || ''}}
           echo ARTIFACT_NAME=$(echo ${{inputs.version || 'main'}} | sed -r 's/\//-/g') >> $GITHUB_ENV
       - name: Upload zip
         uses: actions/upload-artifact@v3
