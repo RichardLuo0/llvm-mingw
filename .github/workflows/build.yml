@@ -31,7 +31,7 @@ jobs:
             cmake:p
       - name: Check latest version
         run: |
-          LLVM_VERSION=$(git ls-remote https://github.com/llvm/llvm-project.git | grep 'refs/heads/${{inputs.version || 'main'}}$' | awk '{print $1}')
+          LLVM_VERSION="${{inputs.version || 'main'}}"
           echo LLVM_VERSION=$LLVM_VERSION >> $GITHUB_ENV
           if [ -z "$LLVM_VERSION" ]
           then
