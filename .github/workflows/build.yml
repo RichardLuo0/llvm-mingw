@@ -7,6 +7,14 @@ on:
         required: true
         default: "main"
         type: string
+      stdlib:
+        description: "Choose std library implementation"
+        required: true
+        default: "libstdc++"
+        type: choice
+        options:
+        - libstdc++
+        - libc++
       clang:
         description: "Build clang"
         required: true
@@ -58,6 +66,7 @@ jobs:
         run: |
           LLVM_VERSION=${{env.LLVM_VERSION}}
           ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm --lto \
+            ${{(inputs.stdlib == 'libc++') && '--enable-libc++' || ''}} \
             ${{inputs.clang && '--enable-clang' || ''}} \
             ${{inputs.lldb && '--enable-lldb' || ''}} \
             ${{inputs.clang-tools-extra && '--enable-clang-tools-extra' || ''}}

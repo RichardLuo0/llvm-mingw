@@ -22,6 +22,8 @@ unset HOST
 BUILDDIR="build"
 LINK_DYLIB=ON
 ASSERTSSUFFIX=""
+RUNTIME=""
+LINK_CXX_STDLIB=ON
 
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -65,6 +67,10 @@ while [ $# -gt 0 ]; do
         ;;
     --enable-clang-tools-extra)
         CLANG_TOOLS_EXTRA=ON
+        ;;
+    --enable-libc++)
+        RUNTIME="libcxx"
+        LINK_CXX_STDLIB=OFF
         ;;
     *)
         PREFIX="$1"
@@ -338,11 +344,13 @@ cmake \
     -DLLVM_TARGETS_TO_BUILD="X86" \
     -DLLVM_INSTALL_TOOLCHAIN_ONLY=$TOOLCHAIN_ONLY \
     -DLLVM_LINK_LLVM_DYLIB=$LINK_DYLIB \
+    -DLLVM_ENABLE_RUNTIMES=$RUNTIME \
+    -DLLVM_STATIC_LINK_CXX_STDLIB=$LINK_CXX_STDLIB \
     ${HOST+-DLLVM_HOST_TRIPLE=$HOST} \
     $CMAKEFLAGS \
     ..
 
-cmake --build build -j ${CORES+-j$CORES}
-cmake --install build
+cmake --build $BUILDDIR -j ${CORES+-j$CORES}
+cmake --install $BUILDDIR
 
 cp ../LICENSE.TXT $PREFIX
