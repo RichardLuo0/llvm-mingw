@@ -33,7 +33,7 @@ jobs:
       fail-fast: false
       matrix:
         sys:
-          - UCRT64
+          - ucrt64
     steps:
       - uses: msys2/setup-msys2@v2
         with:
@@ -41,7 +41,7 @@ jobs:
           install: >-
             git
             make
-            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-clang
           pacboy: >-
             cmake:p
       - name: Check latest version
@@ -57,7 +57,7 @@ jobs:
       - name: Build
         run: |
           LLVM_VERSION=${{env.LLVM_VERSION}}
-          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm \
+          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm --lto \
             ${{inputs.clang && '--enable-clang' || ''}} \
             ${{inputs.lldb && '--enable-lldb' || ''}} \
             ${{inputs.clang-tools-extra && '--enable-clang-tools-extra' || ''}}
