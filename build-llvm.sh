@@ -35,15 +35,12 @@ while [ $# -gt 0 ]; do
         ;;
     --stage2)
         STAGE2=1
-        BUILDDIR="$BUILDDIR-stage2"
         ;;
     --thinlto)
         LTO="thin"
-        BUILDDIR="$BUILDDIR-thinlto"
         ;;
     --lto)
         LTO="full"
-        BUILDDIR="$BUILDDIR-lto"
         ;;
     --disable-dylib)
         LINK_DYLIB=OFF

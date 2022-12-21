@@ -1,3 +1,5 @@
+.vscode
+
 /llvm-project
 /mingw-w64
 /libssp

@@ -12,6 +12,16 @@ on:
         required: true
         type: boolean
         default: true
+      lldb:
+        description: "Build lldb"
+        required: true
+        type: boolean
+        default: true
+      clang-tools-extra:
+        description: "Build clang-tools-extra"
+        required: true
+        type: boolean
+        default: true
 
 jobs:
   msys2:
@@ -47,7 +57,10 @@ jobs:
       - name: Build
         run: |
           LLVM_VERSION=${{env.LLVM_VERSION}}
-          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm ${{inputs.clang && '--enable-clang' || ''}}
+          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm \
+            ${{inputs.clang && '--enable-clang' || ''}} \
+            ${{inputs.lldb && '--enable-lldb' || ''}} \
+            ${{inputs.clang-tools-extra && '--enable-clang-tools-extra' || ''}}
           echo ARTIFACT_NAME=$(echo ${{inputs.version || 'main'}} | sed -r 's/\//-/g') >> $GITHUB_ENV
       - name: Upload zip
         uses: actions/upload-artifact@v3
