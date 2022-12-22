@@ -242,9 +242,6 @@ fi
 
 if [ -n "$LTO" ]; then
     CMAKEFLAGS="$CMAKEFLAGS -DLLVM_ENABLE_LTO=$LTO"
-    CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_C_COMPILER=clang"
-    CMAKEFLAGS="$CMAKEFLAGS -DCMAKE_CXX_COMPILER=clang++"
-    CMAKEFLAGS="$CMAKEFLAGS -DLLVM_USE_LINKER=lld"
 fi
 
 if [ -n "$MACOS_REDIST" ]; then
@@ -323,7 +320,7 @@ else
         PROJECTS="$PROJECTS;lldb"
     fi
     if [ -n "$CLANG" ]; then
-        PROJECTS="$PROJECTS;clang"
+        PROJECTS="$PROJECTS;clang;lld"
     fi
     if [ -n "$CLANG_TOOLS_EXTRA" ]; then
         PROJECTS="$PROJECTS;clang-tools-extra"

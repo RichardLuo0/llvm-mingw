@@ -41,7 +41,7 @@ jobs:
       fail-fast: false
       matrix:
         sys:
-          - CLANG64
+          - UCRT64
     steps:
       - uses: msys2/setup-msys2@v2
         with:
@@ -49,7 +49,7 @@ jobs:
           install: >-
             git
             make
-            mingw-w64-clang-x86_64-clang
+            mingw-w64-ucrt-x86_64-gcc
           pacboy: >-
             cmake:p
       - name: Check latest version
@@ -65,7 +65,7 @@ jobs:
       - name: Build
         run: |
           LLVM_VERSION=${{env.LLVM_VERSION}}
-          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm --lto \
+          ./build-llvm.sh "${{github.workspace}}/llvm" --full-llvm \
             ${{(inputs.stdlib == 'libc++') && '--enable-libc++' || ''}} \
             ${{inputs.clang && '--enable-clang' || ''}} \
             ${{inputs.lldb && '--enable-lldb' || ''}} \
@@ -74,5 +74,5 @@ jobs:
       - name: Upload zip
         uses: actions/upload-artifact@v3
         with:
-          name: llvm-mingw-${{env.ARTIFACT_NAME}}
+          name: llvm-mingw-${{env.ARTIFACT_NAME}}-${{inputs.stdlib}}
           path: ${{github.workspace}}/llvm
